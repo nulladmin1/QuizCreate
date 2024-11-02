@@ -1,19 +1,45 @@
 import unittest
 from unittest.mock import patch
 
-from quizcreate.main import main, get_sha256
-from hashlib import sha256
+from quizcreate import main, QuizCreate
 
+# Using "@patch('builtins.print')" to block print statements from appearing
+
+import yaml
 class TestMain(unittest.TestCase):
-    def test_sha256(self):
-        unencodedString = "teststring123"
-        assert sha256(unencodedString.encode()).hexdigest() == get_sha256(unencodedString)
+    with open('quizcreate/example_config.yaml', 'r') as f:
+        config = yaml.safe_load(f)
+    default_quizcreate = QuizCreate(config=config)
 
-    @patch('builtins.input', side_effect=["Lorem ipsum dolor sit amet"])
+    @patch('builtins.input', side_effect=["1", "1", "1"])
     @patch('builtins.print')
-    def test_main_print(self, mock_print, mock_input):
-        main()
-        mock_print.assert_any_call("16aba5393ad72c0041f5600ad3c2c52ec437a2f0c7fc08fadfc3c0fe9641d7a3")
+    def test_duelist_win(self, mock_print, mock_input):
+        self.default_quizcreate.run()
+        self.assertEqual(self.default_quizcreate.evaluate_outcomes()['title'], 'Duelist')
+    
+    @patch('builtins.input', side_effect=["blah-blah-blah.yaml"])
+    @patch('builtins.print')
+    def test_invalid_config(self, mock_print, mock_input):
+        with self.assertRaises(FileNotFoundError):
+            main()
+    
+    def test_no_config(self):
+        with self.assertRaises(ValueError):
+            quizcreate = QuizCreate()
+
+    @patch('builtins.input', side_effect=["1", "1"])
+    @patch('builtins.print')
+    def test_tiebreaker(self, mock_print, mock_input):
+        with open('tests/tiebreaker.yaml') as f:
+            tiebreaker_config = yaml.safe_load(f)
+        quizcreate = QuizCreate(config = tiebreaker_config)
+        quizcreate.run()
+        self.assertEqual(quizcreate.evaluate_outcomes()['title'], "One")
+
+#    @patch('builtins.input', side_effect=["1", "1", "1"])
+#    @patch('builtins.print')
+#    def test_duelist_win(self, mock_print, mock_input):
+#        mock_print.assert_any_call("duelist")
 
 
 if __name__ == "__main__":

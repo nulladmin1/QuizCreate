@@ -1,0 +1,40 @@
+title: "Tiebreaker test"
+description: "Tiebreaker test"
+
+outcomes:
+  one:
+    title: "One"
+    description: "This one is supposed to win"
+  two:
+    title: "Two"
+    description: "This one is supposed to lose"
+
+questions:
+  - question: "Test question for tiebreaker"
+    choices:
+      - choice: "Choice 1"
+        impact:
+          one: 20
+          two: 20
+      - choice: "Choice 2"
+        impact:
+          one: 20
+          two: 20
+      - choice: "Choice 3"
+        impact:
+          one: 20
+          two: 20
+
+tiebreaker:
+  tiebreaker_method: "tiebreaker"
+  question: "Tiebreaker question: "
+  choices:
+    - choice: "Tiebreaker choice"
+      impact:
+        one: 1
+    - choice: "Tiebreaker choice"
+      impact:
+        one: 1
+    - choice: "Tiebreaker choice"
+      impact:
+        one: 1
