@@ -3,17 +3,17 @@ description: "Take a quiz to find out which Valorant Agent Role you most closely
 
 outcomes:
   duelist:
+    title: "Duelist"
     description: "Duelists are the entry-fraggers of the team: they aggressively enter and push the site first on their team. Most of their kit is geared towards getting kills and dealing damage, and is also self-sufficient. Duelists include Jett, Phoenix, Reyna, Raze, Yoru, and Neon."
-    starting_score: 1
   initiator:
+    title: "Initiator"
     description: "Initiators set up their team for success: they gather information and use their abilities to help their team. They are a mix of passive and aggressive. Most initiators have at least a flash, scanning ability, or a damaging ability. Initiators include Sova, Breach, KAY/O, Fade, Skye, and Gecko."
-    starting_score: 1
   sentinel:
+    title: "Sentinel"
     description: "Sentinels help defend their team: they excel when on defense, and prevent an enemy team from pushing and getting space. They are more passive than aggressive, and on defense, they stop enemies from getting space; on offense, they are the main flank watcher. Sentinels include Sage, Cypher, Chamber, and Killjoy"
-    starting_score: 1
   controller:
+    title: "Controller"
     description: "Controller are most commonly known as smokers: they block vision and create space for their own team. They are team-players, and have a more passive play style. They are definitely the toughest roles in the game. Controllers include Brimstone, Omen, Astra, Viper, and Harbor."
-    starting_score: 1
 
 questions:
   - question: "If you play first-person-shooters, what role do you normally play in your team? "
@@ -66,3 +66,20 @@ questions:
       - choice: "I’ll control the map and keep my team in safe, strategic spots."
         impact:
           controller: 3
+
+tiebreaker:
+  tiebreaker_method: "tiebreaker"
+  question: "Which game style fits you the best? "
+  choices:
+    - choice: "Aggressive and confident"
+      impact:
+        duelist: 1
+    - choice: "Inquisitive and knowledgeable"
+      impact:
+        initiator: 1
+    - choice: "Defensive and slightly passive"
+      impact:
+        sentinel: 1
+    - choice: "Team-player and planner"
+      impact:
+        controller: 1
