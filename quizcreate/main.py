@@ -1,13 +1,19 @@
 import yaml
 from os import path
 import random
+from typing import Optional
 
 class QuizCreate:
-    def __init__(self, config: str):
-        ROOT_DIR = path.dirname(path.abspath(__file__))
-        config_path = path.join(ROOT_DIR, config)
-        with open(config_path, 'r') as c:
-            self.config = yaml.safe_load(c)
+    def __init__(self, configpath: Optional[str] = None, config: Optional[dict] = None ):
+        if isinstance(configpath, str):
+            ROOT_DIR = path.dirname(path.abspath(__file__))
+            config_path = path.join(ROOT_DIR, configpath)
+            with open(config_path, 'r') as c:
+                self.config = yaml.safe_load(c)
+        elif isinstance(config, dict):
+            self.config = config
+        else:
+            raise ValueError("Either configpath or config should be provided")
         
         self.scores = {outcome: 0 for outcome in self.config['outcomes']}
     def run(self):
@@ -32,7 +38,7 @@ class QuizCreate:
         
     def evaluate_outcomes(self) -> str:
         max_score = max(self.scores.values())
-        winning_outcomes = {outcome for outcome, score in self.scores.items() if score == max_score}
+        winning_outcomes = [outcome for outcome, score in self.scores.items() if score == max_score]
 
         if len(winning_outcomes) > 1:
             match self.config['tiebreaker']['tiebreaker_method']:
@@ -55,9 +61,9 @@ class QuizCreate:
                     return self.config['outcomes'][winning_outcomes[0]]
                 case 'random':
                     return random.choice(winning_outcomes) 
-        return self.config[winning_outcomes[0]]
+        return self.config['outcomes'][winning_outcomes[0]]
 def main():
-    quizcreate = QuizCreate(input(': '))
+    quizcreate = QuizCreate(input('Enter config file: '))
     quizcreate.run()
 
 if __name__ == "__main__":
