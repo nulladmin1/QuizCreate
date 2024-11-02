@@ -1,0 +1,68 @@
+title: "Valorant Agent Role Quiz"
+description: "Take a quiz to find out which Valorant Agent Role you most closely resemble to!"
+
+outcomes:
+  duelist:
+    description: "Duelists are the entry-fraggers of the team: they aggressively enter and push the site first on their team. Most of their kit is geared towards getting kills and dealing damage, and is also self-sufficient. Duelists include Jett, Phoenix, Reyna, Raze, Yoru, and Neon."
+    starting_score: 1
+  initiator:
+    description: "Initiators set up their team for success: they gather information and use their abilities to help their team. They are a mix of passive and aggressive. Most initiators have at least a flash, scanning ability, or a damaging ability. Initiators include Sova, Breach, KAY/O, Fade, Skye, and Gecko."
+    starting_score: 1
+  sentinel:
+    description: "Sentinels help defend their team: they excel when on defense, and prevent an enemy team from pushing and getting space. They are more passive than aggressive, and on defense, they stop enemies from getting space; on offense, they are the main flank watcher. Sentinels include Sage, Cypher, Chamber, and Killjoy"
+    starting_score: 1
+  controller:
+    description: "Controller are most commonly known as smokers: they block vision and create space for their own team. They are team-players, and have a more passive play style. They are definitely the toughest roles in the game. Controllers include Brimstone, Omen, Astra, Viper, and Harbor."
+    starting_score: 1
+
+questions:
+  - question: "If you play first-person-shooters, what role do you normally play in your team? "
+    choices:
+      - choice: "The one charging in fights and getting most of the kills."
+        impact:
+          duelist: 3
+          initiator: 1
+      - choice: "Setting up areas where my team can be safe or protected."
+        impact:
+          sentinel: 3
+          controller: 1
+      - choice: "Helping my team create openings and strategizing where we should move next."
+        impact:
+          initiator: 3
+          duelist: 1
+      - choice: "Keeping control over key areas and helping my team avoid danger."
+        impact:
+          controller: 3
+          sentinel: 2
+  - question: "What is your gaming style like?"
+    choices:
+      - choice: "I love high-energy, aggressive play"
+        impact:
+          duelist: 3
+          initiator: 1
+      - choice: "I focus on my team and make sure they survive"
+        impact:
+          sentinel: 3
+          initiator: 2
+      - choice: "I like planning everything out: you can never be too prepared!"
+        impact:
+          controller: 3
+          sentinel: 3
+      - choice: "I like knowing and figuring out as much as I can"
+        impact:
+          initiator: 3
+          controller: 1
+  - question: "How do you prefer to play when your team needs a comeback?"
+    choices:
+      - choice: "Go all out! I’ll push forward and take risks to turn the tide."
+        impact:
+          duelist: 3
+      - choice: "I’ll disrupt the enemy’s plans and create openings for my team."
+        impact:
+          initiator: 3
+      - choice: "Focus on holding down key areas and securing our positions."
+        impact:
+          sentinel: 3
+      - choice: "I’ll control the map and keep my team in safe, strategic spots."
+        impact:
+          controller: 3
