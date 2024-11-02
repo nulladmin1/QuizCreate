@@ -1,3 +1,3 @@
-from quizcreate.main import main, get_sha256
+from quizcreate.main import main, QuizCreate
 
 __version__ = "0.1.0"
