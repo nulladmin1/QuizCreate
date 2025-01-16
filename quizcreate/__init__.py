@@ -1,3 +1,3 @@
-from quizcreate.main import main, QuizCreate
+from quizcreate.main import QuizCreate
 
 __version__ = "0.1.0"
