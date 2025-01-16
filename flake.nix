@@ -3,32 +3,44 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    poetry2nix.url = "github:nix-community/poetry2nix";
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
+      inputs.systems.follows = "nixpkgs";
+    };
+    systems.url = "github:nix-systems/default";
   };
 
   outputs = {
-    self,
     nixpkgs,
     poetry2nix,
+    systems,
+    ...
   }: let
-    systems = ["x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin"];
-    forEachSystem = nixpkgs.lib.genAttrs systems;
-    pkgs = forEachSystem (system: import nixpkgs {inherit system;});
+    forEachSystem = nixpkgs.lib.genAttrs (import systems);
+    pkgsFor = forEachSystem (system: import nixpkgs {inherit system;});
+
+    poetry2nix-lib = forEachSystem (system: poetry2nix.lib.mkPoetry2Nix {pkgs = pkgsFor.${system};});
   in {
     formatter = forEachSystem (system: nixpkgs.legacyPackages.${system}.alejandra);
 
     devShells = forEachSystem (system: {
-      default = pkgs.${system}.mkShell {
-        packages = with pkgs.${system}; [
-          python3
-          poetry
-        ];
-      };
+      default =
+        (poetry2nix-lib.${system}.mkPoetryEnv {
+          projectDir = ./.;
+          editablePackageSources = {
+            quizcreate = ./quizcreate;
+          };
+        })
+        .env
+        .overrideAttrs (oldAttrs: {
+          buildInputs = with pkgsFor.${system}; [
+            poetry
+          ];
+        });
     });
 
     apps = forEachSystem (system: let
-      inherit (poetry2nix.lib.mkPoetry2Nix {pkgs = pkgs.${system};}) mkPoetryApplication;
-      quizcreate = mkPoetryApplication {projectDir = ./.;};
+      quizcreate = poetry2nix-lib.${system}.mkPoetryApplication {projectDir = ./.;};
     in {
       default = {
         type = "app";
